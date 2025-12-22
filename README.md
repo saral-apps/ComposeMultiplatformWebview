@@ -1,8 +1,8 @@
 # Compose Multiplatform Native WebView
 
 [![Maven Central](https://img.shields.io/maven-central/v/com.saralapps/composemultiplatformwebview.svg)](https://central.sonatype.com/artifact/com.saralapps/composemultiplatformwebview)
-[![Kotlin](https://img.shields.io/badge/kotlin-v2.0.0-blue.svg?logo=kotlin)](http://kotlinlang.org)
-[![Compose Multiplatform](https://img.shields.io/badge/Compose%20Multiplatform-v1.6.0-blue)](https://github.com/JetBrains/compose-multiplatform)
+[![Kotlin](https://img.shields.io/badge/kotlin-v2.3.0-blue.svg?logo=kotlin)](http://kotlinlang.org)
+[![Compose Multiplatform](https://img.shields.io/badge/Compose%20Multiplatform-v1.9.3-blue)](https://github.com/JetBrains/compose-multiplatform)
 [![License](https://img.shields.io/github/license/saralapps/composemultiplatformwebview)](http://www.apache.org/licenses/LICENSE-2.0)
 
 ![badge-jvm](http://img.shields.io/badge/platform-jvm-DB413D.svg?style=flat)
@@ -98,7 +98,7 @@ kotlin {
     sourceSets {
         val desktopMain by getting {
             dependencies {
-                implementation("com.saralapps:composemultiplatformwebview:1.0.0")
+                implementation("com.saralapps:composemultiplatformwebview:0.0.2")
             }
         }
     }
@@ -111,8 +111,7 @@ kotlin {
 - Windows 10 version 1803 or later
 - Microsoft Edge WebView2 Runtime (automatically installed on Windows 11, downloadable for Windows 10)
 
-**macOS (Apple Silicon & Intel):**
-- macOS 10.15 (Catalina) or later
+**macOS (Apple Silicon):**
 - WKWebView is included with macOS system frameworks
 
 ## 🚀 Quick Start
