@@ -62,22 +62,22 @@ mavenPublishing {
         url = "https://github.com/saral-apps/composemultiplatformwebview/"
         licenses {
             license {
-                name = "XXX"
-                url = "YYY"
-                distribution = "ZZZ"
+                name = "The Apache License, Version 2.0"
+                url = "http://www.apache.org/licenses/LICENSE-2.0.txt"
+                distribution = "http://www.apache.org/licenses/LICENSE-2.0.txt"
             }
         }
         developers {
             developer {
-                id = "XXX"
-                name = "YYY"
-                url = "ZZZ"
+                id = "saral-apps"
+                name = "Saral Apps"
+                url = "https://github.com/saral-apps/"
             }
         }
         scm {
-            url = "XXX"
-            connection = "YYY"
-            developerConnection = "ZZZ"
+            url = "https://github.com/saral-apps/composemultiplatformwebview/"
+            connection = "scm:git:git://github.com/saral-apps/composemultiplatformwebview.git"
+            developerConnection = "scm:git:ssh://git@github.com/saral-apps/composemultiplatformwebview.git"
         }
     }
 }
