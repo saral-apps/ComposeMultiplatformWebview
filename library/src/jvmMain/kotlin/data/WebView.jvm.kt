@@ -8,7 +8,7 @@ import com.saralapps.composemultiplatformwebview.native.windows.WebView2Checker
  */
 internal object PlatformUtils {
     val isMacOS: Boolean by lazy {
-        System.getProperty("os.name").lowercase().contains("mac")
+        System.getProperty("os.name").lowercase().contains("native/mac")
     }
 
     val isWindows: Boolean by lazy {

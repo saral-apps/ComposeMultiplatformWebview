@@ -1,6 +1,5 @@
 package com.saralapps.composemultiplatformwebview.native.windows
 
-import com.saralapps.common.desktop.webview.windows.WindowsDllLoader
 import com.sun.jna.Callback
 import com.sun.jna.Library
 import com.sun.jna.Native

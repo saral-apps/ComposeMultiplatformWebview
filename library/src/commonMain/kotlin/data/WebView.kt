@@ -15,5 +15,3 @@ data class WebViewAvailability(
  * Checks WebView availability on the current platform.
  */
 expect fun checkWebViewAvailability(): WebViewAvailability
-
-

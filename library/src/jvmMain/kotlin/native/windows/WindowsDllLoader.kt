@@ -1,4 +1,4 @@
-package com.saralapps.common.desktop.webview.windows
+package com.saralapps.composemultiplatformwebview.native.windows
 
 import java.io.File
 import java.io.FileOutputStream
