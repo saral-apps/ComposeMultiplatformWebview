@@ -1,5 +1,6 @@
 [versions]
 agp = "8.13.0"
+jnaPlatform = "5.17.0"
 kotlin = "2.3.0"
 android-minSdk = "24"
 android-compileSdk = "36"
@@ -8,6 +9,7 @@ androidx-activity = "1.12.0"
 vanniktechMavenPublish = "0.35.0"
 
 [libraries]
+jna-platform = { module = "net.java.dev.jna:jna-platform", version.ref = "jnaPlatform" }
 kotlin-test = { module = "org.jetbrains.kotlin:kotlin-test", version.ref = "kotlin" }
 androidx-activity-compose = { module = "androidx.activity:activity-compose", version.ref = "androidx-activity" }
 

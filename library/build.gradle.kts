@@ -1,5 +1,4 @@
 import com.android.build.api.dsl.androidLibrary
-import com.vanniktech.maven.publish.portal.SonatypeCentralPortal
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 
 plugins {
@@ -11,7 +10,7 @@ plugins {
 }
 
 group = "com.saralapps"
-version = "0.0.1"
+version = "0.0.2"
 
 kotlin {
     jvm()
@@ -57,7 +56,7 @@ kotlin {
 
         jvmMain.dependencies {
             implementation(compose.desktop.currentOs)
-            implementation("net.java.dev.jna:jna-platform:5.17.0")
+            implementation(libs.jna.platform)
         }
 
         commonTest.dependencies {
