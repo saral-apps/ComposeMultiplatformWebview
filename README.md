@@ -98,7 +98,7 @@ kotlin {
     sourceSets {
         val desktopMain by getting {
             dependencies {
-                implementation("com.saralapps:composemultiplatformwebview:0.0.2")
+                implementation("com.saralapps:composemultiplatformwebview:0.0.3")
             }
         }
     }
