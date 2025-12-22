@@ -9,5 +9,6 @@ captures
 local.properties
 xcuserdata
 .kotlin
+
 #So we don't accidentally commit our private keys
 *.gpg
