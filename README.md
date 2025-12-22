@@ -1,9 +1,9 @@
 # Compose Multiplatform Native WebView
 
-[![Maven Central](https://img.shields.io/maven-central/v/com.saralapps/compose-native-webview.svg)](https://central.sonatype.com/artifact/com.saralapps/compose-native-webview)
+[![Maven Central](https://img.shields.io/maven-central/v/com.saralapps/composemultiplatformwebview.svg)](https://central.sonatype.com/artifact/com.saralapps/composemultiplatformwebview)
 [![Kotlin](https://img.shields.io/badge/kotlin-v2.0.0-blue.svg?logo=kotlin)](http://kotlinlang.org)
 [![Compose Multiplatform](https://img.shields.io/badge/Compose%20Multiplatform-v1.6.0-blue)](https://github.com/JetBrains/compose-multiplatform)
-[![License](https://img.shields.io/github/license/saralapps/compose-native-webview)](http://www.apache.org/licenses/LICENSE-2.0)
+[![License](https://img.shields.io/github/license/saralapps/composemultiplatformwebview)](http://www.apache.org/licenses/LICENSE-2.0)
 
 ![badge-jvm](http://img.shields.io/badge/platform-jvm-DB413D.svg?style=flat)
 ![badge-windows](http://img.shields.io/badge/platform-windows-0078D6.svg?style=flat)
@@ -41,14 +41,6 @@ A powerful native WebView integration for Compose Multiplatform Desktop (JVM) th
 
 **State Management** – Track loading state, page title, URL changes, and navigation history.
 
-**Cookie Management** – Access and manage cookies with full control over web storage.
-
-**Custom User Agent** – Set custom user agent strings for specific web compatibility requirements.
-
-**SSL Certificate Handling** – Manage SSL/TLS certificates and security configurations.
-
-**Download Management** – Handle file downloads with progress tracking and callbacks.
-
 **Compose-First API** – Idiomatic Kotlin API designed specifically for Compose Multiplatform developers.
 
 ## 🏢 About Saral Apps
@@ -77,7 +69,7 @@ kotlin {
     sourceSets {
         val desktopMain by getting {
             dependencies {
-                implementation("com.saralapps:compose-native-webview:1.0.0")
+                implementation("com.saralapps:composemultiplatformwebview:1.0.0")
             }
         }
     }
@@ -662,85 +654,7 @@ If you encounter JNA library loading errors:
 
 ```kotlin
 dependencies {
-    implementation("net.java.dev.jna:jna:5.13.0")
     implementation("net.java.dev.jna:jna-platform:5.13.0")
-}
-```
-
-## 🧪 Testing
-
-### Unit Testing WebView Integration
-
-```kotlin
-@Test
-fun testWebViewStateCreation() = runComposeUiTest {
-    lateinit var state: PlatformWebViewState
-    
-    setContent {
-        state = rememberPlatformWebViewState(
-            url = "https://example.com",
-            javaScriptEnabled = true
-        )
-    }
-    
-    // Verify state was created
-    assertNotNull(state)
-}
-```
-
-### Testing Navigation Blocking
-
-```kotlin
-@Test
-fun testNavigationBlocking() = runComposeUiTest {
-    var navigationAttempted = false
-    var navigationBlocked = false
-    
-    setContent {
-        val state = rememberPlatformWebViewState(
-            url = "https://example.com",
-            onNavigating = { url ->
-                navigationAttempted = true
-                if (url.contains("blocked")) {
-                    navigationBlocked = true
-                    false
-                } else {
-                    true
-                }
-            }
-        )
-        
-        PlatformWebView(state = state)
-    }
-    
-    waitUntil(timeoutMillis = 5000) {
-        navigationAttempted
-    }
-}
-```
-
-### Testing Lifecycle Callbacks
-
-```kotlin
-@Test
-fun testWebViewLifecycle() = runComposeUiTest {
-    var created = false
-    var disposed = false
-    
-    setContent {
-        PlatformWebView(
-            url = "https://example.com",
-            onCreated = { created = true },
-            onDisposed = { disposed = true }
-        )
-    }
-    
-    waitUntil { created }
-    
-    // Dispose the composable
-    setContent { }
-    
-    waitUntil { disposed }
 }
 ```
 
@@ -786,8 +700,8 @@ The library currently supports Windows and macOS through native WebView integrat
 
 1. **Fork the repository**
    ```bash
-   git clone https://github.com/saralapps/compose-native-webview
-   cd compose-native-webview
+   git clone https://github.com/saralapps/composemultiplatformwebview
+   cd composemultiplatformwebview
    ```
 
 2. **Create a feature branch**
@@ -802,7 +716,7 @@ The library currently supports Windows and macOS through native WebView integrat
     - Platform-specific implementation details
     - Test results on different Linux distributions
 
-5. **Report Issues** at [GitHub Issues](https://github.com/saralapps/compose-native-webview/issues)
+5. **Report Issues** at [GitHub Issues](https://github.com/saralapps/composemultiplatformwebview/issues)
 
 ### Contribution Guidelines
 
@@ -816,15 +730,15 @@ For Linux support specifically, please reach out to us at **opensource@saralapps
 
 ## 💬 Community & Support
 
-- 🐛 [Report Issues](https://github.com/saralapps/compose-native-webview/issues)
-- 💡 [Feature Requests](https://github.com/saralapps/compose-native-webview/discussions)
-- 📧 Email: support@saralapps.com
+- 🐛 [Report Issues](https://github.com/saralapps/composemultiplatformwebview/issues)
+- 💡 [Feature Requests](https://github.com/saralapps/composemultiplatformwebview/discussions)
+- 📧 Email: info@saralapps.com
 - 🌐 Website: [https://saralapps.com](https://saralapps.com)
 
 ## 📄 License
 
 ```
-Copyright 2024 Saral Apps
+Copyright 2025 Saral Apps
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
