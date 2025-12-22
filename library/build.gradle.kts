@@ -10,7 +10,7 @@ plugins {
 }
 
 group = "com.saralapps"
-version = "0.0.2"
+version = "0.0.3"
 
 kotlin {
     jvm()
@@ -73,7 +73,7 @@ mavenPublishing {
     coordinates(group.toString(), "composemultiplatformwebview", version.toString())
 
     pom {
-        name = "Compose Multiplatform WebView 1"
+        name = "Compose Multiplatform WebView"
         description = "A WebView component for Compose Multiplatform supporting Desktop"
         inceptionYear = "2025"
         url = "https://github.com/saral-apps/composemultiplatformwebview/"
