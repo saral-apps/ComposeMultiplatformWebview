@@ -25,6 +25,13 @@ object WindowsDllLoader {
     }
 
     /**
+     * Check if we're running 64-bit Windows.
+     */
+    val isWindows64: Boolean by lazy {
+        isWindows && System.getProperty("os.arch").contains("64")
+    }
+
+    /**
      * Check if DLLs are loaded successfully.
      */
     val isLoaded: Boolean
@@ -69,8 +76,6 @@ object WindowsDllLoader {
     }
 
     private fun extractAndLoadDlls() {
-        // Create a directory for our DLLs
-        // Use app-specific folder to avoid conflicts
         val tempBase = File(System.getProperty("java.io.tmpdir"))
         val appName = "SaralpAppsWebView2"
         val dllDir = File(tempBase, appName)
@@ -81,14 +86,12 @@ object WindowsDllLoader {
 
         dllDirectory = dllDir
 
-        // List of DLLs to extract (order matters - WebView2Loader must be available when NativeWebView loads)
         val dlls = listOf("WebView2Loader.dll", "NativeWebView.dll")
 
         for (dllName in dlls) {
             extractDll(dllName, dllDir)
         }
 
-        // Set JNA library path to include our DLL directory
         val currentPath = System.getProperty("jna.library.path") ?: ""
         val newPath = if (currentPath.isEmpty()) {
             dllDir.absolutePath
@@ -97,7 +100,6 @@ object WindowsDllLoader {
         }
         System.setProperty("jna.library.path", newPath)
 
-        // Also add to java.library.path for good measure
         val javaLibPath = System.getProperty("java.library.path") ?: ""
         val newJavaLibPath = if (javaLibPath.isEmpty()) {
             dllDir.absolutePath
@@ -105,23 +107,26 @@ object WindowsDllLoader {
             "${dllDir.absolutePath};$javaLibPath"
         }
         System.setProperty("java.library.path", newJavaLibPath)
-
-        println("[WindowsDllLoader] DLLs extracted to: ${dllDir.absolutePath}")
-        println("[WindowsDllLoader] JNA library path: $newPath")
     }
 
     private fun extractDll(dllName: String, targetDir: File) {
         val targetFile = File(targetDir, dllName)
 
-        // Try multiple resource paths
-        val resourcePaths = listOf(
-            "win/$dllName",           // resources/win/
-            "windows/$dllName",       // resources/windows/
-            dllName,                   // resources/
-            "/win/$dllName",          // absolute path
-            "/windows/$dllName",
-            "/$dllName"
-        )
+        val resourcePaths = buildList {
+            if (isWindows64) {
+                add("win32-x86-64/$dllName")
+                add("/win32-x86-64/$dllName")
+            } else {
+                add("win32-x86/$dllName")
+                add("/win32-x86/$dllName")
+            }
+            add("win/$dllName")
+            add("windows/$dllName")
+            add(dllName)
+            add("/win/$dllName")
+            add("/windows/$dllName")
+            add("/$dllName")
+        }
 
         var inputStream: java.io.InputStream? = null
         var foundPath: String? = null
@@ -140,11 +145,9 @@ object WindowsDllLoader {
         if (inputStream == null) {
             throw RuntimeException(
                 "Could not find $dllName in resources. Tried paths: $resourcePaths\n" +
-                        "Make sure the DLL is in desktopMain/resources/win/"
+                        "Make sure the DLL is in jvmMain/resources/win32-x86-64/ (for 64-bit) or jvmMain/resources/win32-x86/ (for 32-bit)"
             )
         }
-
-        println("[WindowsDllLoader] Found $dllName at: $foundPath")
 
         // Check if we need to extract (file doesn't exist or is different size)
         val needsExtract = !targetFile.exists() ||
@@ -158,7 +161,6 @@ object WindowsDllLoader {
                 ?: Thread.currentThread().contextClassLoader?.getResourceAsStream(foundPath)
                 ?: throw RuntimeException("Could not reopen stream for $dllName")
 
-            println("[WindowsDllLoader] Extracting $dllName to ${targetFile.absolutePath}")
 
             try {
                 // Delete old file if exists (might be locked)
@@ -173,9 +175,7 @@ object WindowsDllLoader {
                 extractStream.close()
             }
 
-            println("[WindowsDllLoader] Extracted $dllName (${targetFile.length()} bytes)")
         } else {
-            println("[WindowsDllLoader] $dllName already exists (${targetFile.length()} bytes)")
             inputStream.close()
         }
     }
@@ -202,7 +202,6 @@ object WindowsDllLoader {
             try {
                 dir.listFiles()?.forEach { it.delete() }
                 dir.delete()
-                println("[WindowsDllLoader] Cleaned up DLL directory")
             } catch (e: Exception) {
                 // DLLs might be in use, ignore
             }

@@ -98,7 +98,7 @@ kotlin {
     sourceSets {
         val desktopMain by getting {
             dependencies {
-                implementation("com.saralapps:composemultiplatformwebview:0.0.3")
+                implementation("com.saralapps:composemultiplatformwebview:0.0.7")
             }
         }
     }
@@ -806,7 +806,7 @@ The library currently supports Windows and macOS through native WebView integrat
 
 1. **Fork the repository**
    ```bash
-   git clone https://github.com/saralapps/composemultiplatformwebview
+   git clone https://github.com/saral-apps/composemultiplatformwebview
    cd composemultiplatformwebview
    ```
 
@@ -822,7 +822,7 @@ The library currently supports Windows and macOS through native WebView integrat
    - Platform-specific implementation details
    - Test results on different Linux distributions
 
-5. **Report Issues** at [GitHub Issues](https://github.com/saralapps/composemultiplatformwebview/issues)
+5. **Report Issues** at [GitHub Issues](https://github.com/saral-apps/composemultiplatformwebview/issues)
 
 ### Contribution Guidelines
 
@@ -832,12 +832,12 @@ The library currently supports Windows and macOS through native WebView integrat
 - Update documentation as needed
 - Ensure cross-platform compatibility
 
-For Linux support specifically, please reach out to us at **opensource@saralapps.com** or open a discussion on GitHub. We're happy to provide guidance, technical details, and support throughout the development process.
+For Linux support specifically, please reach out to us at **info@saralapps.com** or open a discussion on GitHub. We're happy to provide guidance, technical details, and support throughout the development process.
 
 ## 💬 Community & Support
 
-- 🐛 [Report Issues](https://github.com/saralapps/composemultiplatformwebview/issues)
-- 💡 [Feature Requests](https://github.com/saralapps/composemultiplatformwebview/discussions)
+- 🐛 [Report Issues](https://github.com/saral-apps/ComposeMultiplatformWebView/issues)
+- 💡 [Feature Requests](https://github.com/saral-apps/composemultiplatformwebview/discussions)
 - 📧 Email: info@saralapps.com
 - 📞 Phone: +977 9851275536
 - 🌐 Website: [https://saralapps.com](https://saralapps.com)
