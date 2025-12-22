@@ -45,20 +45,49 @@ A powerful native WebView integration for Compose Multiplatform Desktop (JVM) th
 
 ## 🏢 About Saral Apps
 
-This library is developed and maintained by **[Saral Apps](https://saralapps.com)**, a technology company specializing in cross-platform application development and native system integration solutions.
+This library is developed and maintained by **[Saral Apps Pvt. Ltd.](https://saralapps.com)**, a Nepal-based technology company specializing in custom digital experiences and innovative software solutions.
 
 ### What We Do
 
-Saral Apps focuses on building high-performance, cross-platform development tools and libraries that bridge the gap between modern UI frameworks and native operating system capabilities. Our mission is to enable developers to create applications that feel truly native while maintaining code reusability across platforms.
+Saral Apps Pvt. Ltd. is a technology solutions provider with a strong focus on developing eLearning platforms and custom digital experiences. Based in Kathmandu, Nepal, we're dedicated to creating interactive, scalable, and engaging solutions tailored to educators, businesses, and learners across various industries.
+
+**Our Core Services:**
+- **eLearning Platform Development** – Interactive and scalable learning solutions for educational institutions and corporate training
+- **Mobile App Development** – Native and cross-platform applications for iOS, Android, and Desktop
+- **Website Design & Development** – User-friendly, conversion-focused web solutions
+- **Custom Software Development** – Tailored software to streamline complex business processes
+- **Web Hosting Services** – Reliable, secure hosting solutions for digital assets
 
 **Our Expertise:**
-- Cross-platform desktop and mobile application development
-- Native system integration and JNA/JNI bridge development
-- Performance optimization and low-level system programming
-- Open-source tooling for the Kotlin and Compose Multiplatform ecosystem
-- Enterprise software solutions with native platform integration
+- Cross-platform application development with modern frameworks
+- Native system integration and low-level programming
+- UI/UX design focused on user experience and engagement
+- Educational technology and digital learning platforms
+- Enterprise software solutions
 
-We believe in empowering developers with tools that don't compromise on performance or user experience. Our libraries are production-tested, actively maintained, and designed with real-world use cases in mind.
+**Our Values:**
+- **Trust & Transparency** – Open communication and honest collaboration
+- **Virtuous Partnership** – Building relationships based on respect and mutual success
+- **Simple, Smart, Scalable** – Making technology accessible without compromising power
+- **Assured Quality** – Delivering with consistency, care, and precision
+
+### Our Portfolio
+
+Saral Apps has successfully delivered digital solutions for various educational institutions and businesses in Nepal, including:
+- **Gurukul Commerce Academy** – Premier CA education platform
+- **Lex Nepal** – Nepal's leading legal education platform
+- **TS Gurukul** – Loksewa exam preparation app
+- **Bright Academy** – Modern educational institution platform
+- **Kirtipur Valley Institute** – High-quality training platform
+- **Saral Discount** – Employee benefits platform
+
+We believe in empowering developers and businesses with tools that don't compromise on performance or user experience. Our libraries and solutions are production-tested, actively maintained, and designed with real-world use cases in mind.
+
+**Connect with us:**
+- 📍 Location: New Baneshwor, Kathmandu, Nepal
+- 📞 Phone: +977 9851275536
+- 📧 Email: info@saralapps.com
+- 🌐 Website: [https://saralapps.com](https://saralapps.com)
 
 ## 📦 Installation
 
@@ -654,7 +683,85 @@ If you encounter JNA library loading errors:
 
 ```kotlin
 dependencies {
+    implementation("net.java.dev.jna:jna:5.13.0")
     implementation("net.java.dev.jna:jna-platform:5.13.0")
+}
+```
+
+## 🧪 Testing
+
+### Unit Testing WebView Integration
+
+```kotlin
+@Test
+fun testWebViewStateCreation() = runComposeUiTest {
+    lateinit var state: PlatformWebViewState
+    
+    setContent {
+        state = rememberPlatformWebViewState(
+            url = "https://example.com",
+            javaScriptEnabled = true
+        )
+    }
+    
+    // Verify state was created
+    assertNotNull(state)
+}
+```
+
+### Testing Navigation Blocking
+
+```kotlin
+@Test
+fun testNavigationBlocking() = runComposeUiTest {
+    var navigationAttempted = false
+    var navigationBlocked = false
+    
+    setContent {
+        val state = rememberPlatformWebViewState(
+            url = "https://example.com",
+            onNavigating = { url ->
+                navigationAttempted = true
+                if (url.contains("blocked")) {
+                    navigationBlocked = true
+                    false
+                } else {
+                    true
+                }
+            }
+        )
+        
+        PlatformWebView(state = state)
+    }
+    
+    waitUntil(timeoutMillis = 5000) {
+        navigationAttempted
+    }
+}
+```
+
+### Testing Lifecycle Callbacks
+
+```kotlin
+@Test
+fun testWebViewLifecycle() = runComposeUiTest {
+    var created = false
+    var disposed = false
+    
+    setContent {
+        PlatformWebView(
+            url = "https://example.com",
+            onCreated = { created = true },
+            onDisposed = { disposed = true }
+        )
+    }
+    
+    waitUntil { created }
+    
+    // Dispose the composable
+    setContent { }
+    
+    waitUntil { disposed }
 }
 ```
 
@@ -712,9 +819,9 @@ The library currently supports Windows and macOS through native WebView integrat
 3. **Make your changes** and test thoroughly
 
 4. **Submit a Pull Request** with:
-    - Clear description of changes
-    - Platform-specific implementation details
-    - Test results on different Linux distributions
+   - Clear description of changes
+   - Platform-specific implementation details
+   - Test results on different Linux distributions
 
 5. **Report Issues** at [GitHub Issues](https://github.com/saralapps/composemultiplatformwebview/issues)
 
@@ -733,12 +840,14 @@ For Linux support specifically, please reach out to us at **opensource@saralapps
 - 🐛 [Report Issues](https://github.com/saralapps/composemultiplatformwebview/issues)
 - 💡 [Feature Requests](https://github.com/saralapps/composemultiplatformwebview/discussions)
 - 📧 Email: info@saralapps.com
+- 📞 Phone: +977 9851275536
 - 🌐 Website: [https://saralapps.com](https://saralapps.com)
+- 📍 Address: New Baneshwor, Kathmandu, Nepal
 
 ## 📄 License
 
 ```
-Copyright 2025 Saral Apps
+Copyright 2025 Saral Apps Pvt. Ltd.
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
@@ -757,6 +866,6 @@ limitations under the License.
 
 ## 🌟 If you find this library useful, please star ⭐ the repository!
 
-**Built with ❤️ by [Saral Apps](https://saralapps.com)**
+**Built with ❤️ by [Saral Apps Pvt. Ltd.](https://saralapps.com) in Kathmandu, Nepal**
 
-*Empowering developers to create truly native cross-platform applications*
+*Crafting digital experiences that elevate brands and solve real-world problems*
