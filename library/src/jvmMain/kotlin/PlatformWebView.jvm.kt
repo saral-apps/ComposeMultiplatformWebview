@@ -18,6 +18,8 @@ import com.saralapps.composemultiplatformwebview.native.mac.NativeWebView
 import com.saralapps.composemultiplatformwebview.native.mac.rememberNativeWebViewState
 import com.saralapps.composemultiplatformwebview.native.windows.WindowsWebView
 import com.saralapps.composemultiplatformwebview.native.windows.rememberWindowsWebViewState
+import com.saralapps.composemultiplatformwebview.util.encodeUrlParams
+import java.net.URLEncoder
 
 /**
  * Creates and remembers a cross-platform WebView state.
@@ -29,9 +31,12 @@ actual fun rememberPlatformWebViewState(
     allowsFileAccess: Boolean,
     onNavigating: ((url: String) -> Boolean)?
 ): PlatformWebViewState {
+
+    val encodedUrl = url.encodeUrlParams()
+
     val macState = if (PlatformUtils.isMacOS) {
         rememberNativeWebViewState(
-            url = url,
+            url = encodedUrl,
             javaScriptEnabled = javaScriptEnabled,
             allowsFileAccess = allowsFileAccess,
             onNavigating = onNavigating
@@ -40,7 +45,7 @@ actual fun rememberPlatformWebViewState(
 
     val windowsState = if (PlatformUtils.isWindows) {
         rememberWindowsWebViewState(
-            url = url,
+            url = encodedUrl,
             javaScriptEnabled = javaScriptEnabled,
             allowsFileAccess = allowsFileAccess,
             onNavigating = onNavigating
@@ -150,8 +155,9 @@ actual fun PlatformWebView(
     onDisposed: (() -> Unit)?,
     onUnavailable: @Composable ((WebViewAvailability) -> Unit)?
 ) {
+    val encodedUrl = url.encodeUrlParams()
     val state = rememberPlatformWebViewState(
-        url = url,
+        url = encodedUrl,
         javaScriptEnabled = javaScriptEnabled,
         allowsFileAccess = allowsFileAccess,
         onNavigating = onNavigating
