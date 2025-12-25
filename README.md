@@ -5,6 +5,7 @@
 [![Compose Multiplatform](https://img.shields.io/badge/Compose%20Multiplatform-v1.9.3-blue)](https://github.com/JetBrains/compose-multiplatform)
 [![License](https://img.shields.io/github/license/saralapps/composemultiplatformwebview)](http://www.apache.org/licenses/LICENSE-2.0)
 
+![badge-android](http://img.shields.io/badge/platform-android-0078D6.svg?style=flat)
 ![badge-jvm](http://img.shields.io/badge/platform-jvm-DB413D.svg?style=flat)
 ![badge-windows](http://img.shields.io/badge/platform-windows-0078D6.svg?style=flat)
 ![badge-macos](http://img.shields.io/badge/platform-macos-000000.svg?style=flat)
@@ -98,7 +99,7 @@ kotlin {
     sourceSets {
         val desktopMain by getting {
             dependencies {
-                implementation("com.saralapps:composemultiplatformwebview:0.0.7")
+                implementation("com.saralapps:composemultiplatformwebview:0.1.0")
             }
         }
     }
