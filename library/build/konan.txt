@@ -1,1 +1,1 @@
-/Users/hamroacademy/.konan/kotlin-native-prebuilt-macos-aarch64-2.3.0
+/Users/hamroacademy/.konan/kotlin-native-prebuilt-macos-aarch64-2.2.21
