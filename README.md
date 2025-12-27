@@ -57,7 +57,7 @@ Add the dependency to your `build.gradle.kts`:
 kotlin {
     sourceSets {
         commonMain.dependencies {
-            implementation("com.saralapps:composemultiplatformwebview:0.1.2")
+            implementation("com.saralapps:composemultiplatformwebview:0.1.4")
         }
     }
 }
@@ -78,7 +78,7 @@ kotlin {
 - Microsoft Edge WebView2 Runtime (pre-installed on Windows 11, [downloadable](https://developer.microsoft.com/microsoft-edge/webview2/) for Windows 10)
 
 **macOS:**
-- macOS 10.15 (Catalina) or later
+- macOS 11.5 or later
 - WKWebView included with system frameworks
 
 **Linux:**

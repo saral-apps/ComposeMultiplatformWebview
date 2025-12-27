@@ -10,7 +10,7 @@ plugins {
 }
 
 group = "com.saralapps"
-version = "0.1.2"
+version = "0.1.4"
 
 kotlin {
     jvm()
