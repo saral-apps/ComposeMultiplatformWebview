@@ -110,6 +110,8 @@ class WindowsWebViewState(
                 pendingInterceptor = null
             }
 
+            pendingUrl?.let { loadUrl(it) }
+
             return true
 
         } catch (e: Throwable) {
@@ -202,39 +204,29 @@ class WindowsWebViewState(
 
     /**
      * Forces the WebView to refresh its display.
-     * This is the key fix for the white screen issue on Windows.
      */
     fun forceDisplay() {
         if (webViewId == 0L || !isAttached) return
 
-        try {
-            nativeCanvas?.let { c ->
-                SwingUtilities.invokeLater {
-                    // Get current size
-                    val w = c.width
-                    val h = c.height
+        nativeCanvas?.let { c ->
+            SwingUtilities.invokeLater {
+                // Get current size
+                val w = c.width
+                val h = c.height
 
-                    if (w > 0 && h > 0) {
-                        // Force bounds update multiple times
-                        WindowsWebViewNative.INSTANCE.setWebViewBounds(webViewId, 0, 0, w, h)
-
-                        // Toggle visibility to force refresh
-                        WindowsWebViewNative.INSTANCE.setWebViewVisible(webViewId, false)
-                        Thread.sleep(10) // Small delay
-                        WindowsWebViewNative.INSTANCE.setWebViewVisible(webViewId, true)
-
-                        // Update bounds again after visibility toggle
-                        WindowsWebViewNative.INSTANCE.setWebViewBounds(webViewId, 0, 0, w, h)
-
-                        // Invalidate canvas to trigger repaint
-                        c.repaint()
-                        c.parent?.repaint()
-                        c.parent?.revalidate()
-                    }
+                if (w > 0 && h > 0) {
+                    // Update bounds
+                    WindowsWebViewNative.INSTANCE.setWebViewBounds(webViewId, 0, 0, w, h)
                 }
+
+                // Toggle visibility to force refresh
+                WindowsWebViewNative.INSTANCE.setWebViewVisible(webViewId, false)
+                WindowsWebViewNative.INSTANCE.setWebViewVisible(webViewId, true)
+
+                // Invalidate canvas to trigger repaint
+                c.repaint()
+                c.parent?.repaint()
             }
-        } catch (e: Throwable) {
-            // Silently ignore
         }
     }
 }
@@ -286,18 +278,6 @@ fun WindowsWebView(
         val window = composeWindow ?: return@LaunchedEffect
 
         if (!isInitialized && state.create()) {
-            // Wait for environment to be ready
-            var attempts = 0
-            while (!WindowsWebViewNative.INSTANCE.isEnvironmentReady() && attempts < 100) {
-                delay(50)
-                attempts++
-            }
-
-            if (!WindowsWebViewNative.INSTANCE.isEnvironmentReady()) {
-                println("[WindowsWebView] Environment failed to initialize")
-                return@LaunchedEffect
-            }
-
             // Create a Canvas on the Swing thread
             val canvasCreated = kotlinx.coroutines.suspendCancellableCoroutine<Canvas?> { continuation ->
                 SwingUtilities.invokeLater {
@@ -319,64 +299,36 @@ fun WindowsWebView(
             canvas = canvasCreated
 
             // Wait for canvas to be displayable and have a size
-            var canvasAttempts = 0
-            while (canvasAttempts < 50) {
+            var attempts = 0
+            while (attempts < 50) { // Wait up to 2.5 seconds
                 delay(50)
                 val c = canvas
                 if (c != null && c.isDisplayable && c.width > 0 && c.height > 0) {
                     break
                 }
-                canvasAttempts++
+                attempts++
             }
 
             // Attach WebView to canvas
             canvas?.let { c ->
                 if (state.attachToWindow(c)) {
                     isInitialized = true
-
-                    // Wait for WebView to be ready
-                    var webViewAttempts = 0
-                    while (!WindowsWebViewNative.INSTANCE.isWebViewReady(state.webViewId) && webViewAttempts < 100) {
-                        delay(50)
-                        webViewAttempts++
-                    }
-
-                    // Set initial bounds
-                    if (c.width > 0 && c.height > 0) {
-                        state.updateBounds(0, 0, c.width, c.height)
-                    }
-
-                    // Force display immediately after creation
-                    delay(100)
-                    state.forceDisplay()
-
-                    // Load URL if provided
-                    state.pendingUrl?.let { url ->
-                        delay(200)
-                        state.loadUrl(url)
-                    }
-
                     onCreated?.invoke()
                 }
             }
         }
     }
 
-    // Aggressive initial display forcing - this is the KEY FIX
+    // Periodic bounds update to ensure WebView renders
     LaunchedEffect(isInitialized) {
         if (!isInitialized) return@LaunchedEffect
 
-        // Force display multiple times in the first few seconds
-        // This ensures WebView2 renders properly without needing window resize
-        val delays = listOf(100L, 200L, 300L, 500L, 700L, 1000L, 1500L, 2000L)
-
-        for (delayMs in delays) {
-            delay(delayMs)
+        // Force bounds update multiple times in the first few seconds
+        repeat(10) {
+            delay(100)
             canvas?.let { c ->
                 if (c.width > 0 && c.height > 0) {
-                    // Update bounds first
                     state.updateBounds(0, 0, c.width, c.height)
-                    // Then force display
                     state.forceDisplay()
                 }
             }
@@ -432,20 +384,13 @@ fun WindowsWebView(
 
                 if (width <= 0 || height <= 0) return@onGloballyPositioned
 
-                // Update canvas position and size
+                // Update canvas position and size immediately (not invokeLater)
                 canvas?.let { c ->
-                    val needsUpdate = c.x != x || c.y != y || c.width != width || c.height != height
-
-                    if (needsUpdate) {
+                    if (c.x != x || c.y != y || c.width != width || c.height != height) {
                         SwingUtilities.invokeLater {
                             c.setBounds(x, y, width, height)
-                            // Also update WebView bounds
+                            // Also force WebView bounds update
                             state.updateBounds(0, 0, width, height)
-                            // Force refresh after bounds change
-                            scope.launch {
-                                delay(50)
-                                state.forceDisplay()
-                            }
                         }
                     }
                 }
